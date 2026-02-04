@@ -27,6 +27,16 @@ A full-stack task management app with RESTful API and responsive UI.
 
 ## Setup
 
+### Option 1: Docker (Recommended)
+
+```bash
+docker-compose up --build
+# Frontend: http://localhost:3000
+# Backend:  http://localhost:3001
+```
+
+### Option 2: Manual
+
 ```bash
 # Backend
 cd backend && npm install && npm run seed && npm start
