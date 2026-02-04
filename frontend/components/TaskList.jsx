@@ -1,8 +1,8 @@
 'use client';
 
+import { PRIORITY, SORT_OPTIONS, STATUS } from '../lib/constants';
 import { createTask, deleteTask, getTasks, updateTask } from '../lib/api';
 import { useEffect, useState } from 'react';
-import { STATUS, PRIORITY, SORT_OPTIONS } from '../lib/constants';
 
 import Modal from './Modal';
 import TaskForm from './TaskForm';
@@ -140,9 +140,11 @@ export default function TaskList() {
 
   return (
     <div>
-      {/* loading indicator */}
+      {/* loading spinner */}
       {loading && !initialLoad && (
-        <p className="text-blue-600 mb-4">saving...</p>
+        <div className="fixed top-4 right-4 z-50">
+          <div className="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
       )}
 
       {/* error message */}
