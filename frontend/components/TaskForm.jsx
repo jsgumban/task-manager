@@ -111,7 +111,7 @@ export default function TaskForm({ task, onSubmit, onCancel }) {
           <button type="submit" className="flex-1 px-4 py-2 bg-green-500 text-white rounded">
             {task ? 'Update' : 'Add Task'}
           </button>
-          <button type="button" onClick={onCancel} className="flex-1 px-4 py-2 bg-gray-300 rounded">
+          <button type="button" onClick={onCancel} className="flex-1 px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded">
             Cancel
           </button>
         </div>

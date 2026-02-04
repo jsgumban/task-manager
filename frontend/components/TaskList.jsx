@@ -180,7 +180,7 @@ export default function TaskList() {
           <button
             onClick={() => goToPage(page - 1)}
             disabled={page === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-600"
           >
             Previous
           </button>
@@ -190,7 +190,7 @@ export default function TaskList() {
           <button
             onClick={() => goToPage(page + 1)}
             disabled={page === totalPages}
-            className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed dark:border-gray-600"
           >
             Next
           </button>

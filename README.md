@@ -2,6 +2,17 @@
 
 A full-stack task management app with RESTful API and responsive UI.
 
+## Features
+
+- CRUD operations for tasks
+- Filter by status and priority
+- Search by title/description
+- Sort by date, priority
+- Pagination (10 items per page)
+- Form validation (client + server)
+- Dark mode toggle (persists preference)
+- Responsive design (mobile + desktop)
+
 ## Tech Stack
 
 | Layer | Technology | Why |
@@ -86,8 +97,9 @@ cd backend && npm test
 
 | Task | Time |
 |------|------|
-| Backend setup + CRUD | 2 |
-| Frontend UI | 2 |
-| Pagination + Validation | 1 |
-| Testing + Docs | 1 |
-| **Total** | **6** |
+| Backend setup + CRUD | 2 hrs |
+| Frontend UI | 2 hrs |
+| Pagination + Validation | 1 hr |
+| Testing + Docs | 1 hr |
+| Dark mode (bonus) | 0.5 hr |
+| **Total** | **6.5 hrs** |

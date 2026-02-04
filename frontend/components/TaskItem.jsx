@@ -5,13 +5,13 @@ import { STATUS, PRIORITY, STATUS_COLORS, PRIORITY_COLORS } from '../lib/constan
 // single task card with actions
 export default function TaskItem({ task, onEdit, onDelete, onStatusChange }) {
   return (
-    <div className="border rounded-lg p-4 mb-3 bg-white shadow-sm">
+    <div className="border rounded-lg p-4 mb-3 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
         {/* task info */}
         <div className="flex-1 min-w-0">
           <h3 className="font-medium text-lg break-words">{task.title}</h3>
           {task.description && (
-            <p className="text-gray-600 text-sm mt-1 break-words whitespace-pre-wrap">{task.description}</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mt-1 break-words whitespace-pre-wrap">{task.description}</p>
           )}
           {/* badges */}
           <div className="flex flex-wrap gap-2 mt-2">
