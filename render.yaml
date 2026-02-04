@@ -5,8 +5,8 @@ services:
     runtime: node
     plan: free
     rootDir: backend
-    buildCommand: npm install && npm run seed
-    startCommand: npm start
+    buildCommand: npm install
+    startCommand: npm run seed && npm start
     envVars:
       - key: NODE_ENV
         value: production

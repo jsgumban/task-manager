@@ -18,8 +18,15 @@ const tasks = [
 ];
 
 async function seed() {
-  // clear existing tasks
-  await db('tasks').del();
+  // ensure table exists
+  await db.init();
+
+  // only seed if empty
+  const count = await db('tasks').count('id as count').first();
+  if (count.count > 0) {
+    console.log('Database already has ' + count.count + ' tasks, skipping seed');
+    process.exit(0);
+  }
 
   // insert tasks
   await db('tasks').insert(tasks);

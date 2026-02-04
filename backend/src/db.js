@@ -33,6 +33,7 @@ async function init() {
       table.timestamp('updated_at').defaultTo(db.fn.now());
     });
   }
+
   initialized = true;
 }
 
