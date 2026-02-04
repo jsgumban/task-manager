@@ -25,7 +25,4 @@ services:
     startCommand: npm start
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          name: task-manager-api
-          type: web
-          property: url
+        sync: false  # Set manually after backend deploys
