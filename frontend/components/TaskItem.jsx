@@ -21,9 +21,11 @@ export default function TaskItem({ task, onEdit, onDelete, onStatusChange }) {
             <span className={`text-xs px-2 py-1 rounded ${PRIORITY_COLORS[task.priority]}`}>
               {task.priority}
             </span>
-            {task.due_date && (
-              <span className="text-xs text-gray-500">Due: {task.due_date}</span>
-            )}
+          </div>
+          {/* dates */}
+          <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+            {task.due_date && <span>Due: {task.due_date}</span>}
+            <span>Created: {task.created_at}</span>
           </div>
         </div>
 

@@ -12,6 +12,14 @@ export const PRIORITY = {
   HIGH: 'high',
 };
 
+// sort options
+export const SORT_OPTIONS = {
+  'created_at-desc': 'Newest first',
+  'created_at-asc': 'Oldest first',
+  'due_date-asc': 'Due date (soonest)',
+  'priority-desc': 'Priority (high first)',
+};
+
 // status badge colors
 export const STATUS_COLORS = {
   [STATUS.PENDING]: 'bg-yellow-100 text-yellow-800',

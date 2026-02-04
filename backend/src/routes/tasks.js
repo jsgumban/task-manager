@@ -4,9 +4,42 @@ const { STATUS, PRIORITY } = require('../constants');
 
 const router = express.Router();
 
-// get all tasks
+// get all tasks with filtering, sorting, and search
 router.get('/', async (req, res) => {
-  const tasks = await db('tasks').orderBy('created_at', 'desc');
+  const { status, priority, sort, order, search } = req.query;
+
+  let query = db('tasks');
+
+  // filter by status
+  if (status) {
+    query = query.where('status', status);
+  }
+
+  // filter by priority
+  if (priority) {
+    query = query.where('priority', priority);
+  }
+
+  // search by title or description
+  if (search) {
+    query = query.where(function() {
+      this.where('title', 'like', `%${search}%`)
+          .orWhere('description', 'like', `%${search}%`);
+    });
+  }
+
+  // sort (default: created_at desc)
+  const sortField = sort || 'created_at';
+  const sortOrder = order || 'desc';
+
+  // put nulls last for due_date sorting
+  if (sortField === 'due_date') {
+    query = query.orderByRaw(`CASE WHEN due_date IS NULL OR due_date = '' THEN 1 ELSE 0 END, due_date ${sortOrder}`);
+  } else {
+    query = query.orderBy(sortField, sortOrder);
+  }
+
+  const tasks = await query;
   res.json(tasks);
 });
 
