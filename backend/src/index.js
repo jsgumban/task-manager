@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const db = require('./db');
 const tasksRouter = require('./routes/tasks');
 
 const app = express();
@@ -28,8 +29,10 @@ app.use((err, req, res, next) => {
 
 // start server only if not in test mode
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  db.init().then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
   });
 }
 

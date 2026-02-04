@@ -37,12 +37,7 @@ async function init() {
   initialized = true;
 }
 
-// export init for tests
+// export init for manual initialization
 db.init = init;
-
-// auto-init for non-test environments
-if (!isTest) {
-  init();
-}
 
 module.exports = db;
