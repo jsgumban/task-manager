@@ -1,0 +1,31 @@
+services:
+  # Backend API
+  - type: web
+    name: task-manager-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: /data/tasks.db
+    disk:
+      name: task-data
+      mountPath: /data
+      sizeGB: 1
+
+  # Frontend
+  - type: web
+    name: task-manager-ui
+    runtime: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          name: task-manager-api
+          type: web
+          property: url
