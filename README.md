@@ -11,6 +11,7 @@ A full-stack task management app with RESTful API and responsive UI.
 - Pagination (10 items per page)
 - Form validation (client + server)
 - Dark mode toggle (persists preference)
+- Export all tasks to CSV
 - Responsive design (mobile + desktop)
 
 ## Tech Stack
@@ -101,5 +102,5 @@ cd backend && npm test
 | Frontend UI | 2 hrs |
 | Pagination + Validation | 1 hr |
 | Testing + Docs | 1 hr |
-| Dark mode (bonus) | 0.5 hr |
+| Bonus (dark mode, export) | 0.5 hr |
 | **Total** | **6.5 hrs** |
