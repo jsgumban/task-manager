@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../db');
 const { STATUS, PRIORITY } = require('../constants');
+const { validateTask } = require('../validators/tasks');
 
 const router = express.Router();
 
@@ -74,9 +75,15 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   const { title, description, status, priority, due_date } = req.body;
 
+  // validate input
+  const errors = validateTask(req.body, false);
+  if (errors.length > 0) {
+    return res.status(400).json({ error: errors.join(', ') });
+  }
+
   const [id] = await db('tasks').insert({
-    title,
-    description,
+    title: title.trim(),
+    description: description ? description.trim() : null,
     status: status || STATUS.PENDING,
     priority: priority || PRIORITY.MEDIUM,
     due_date
@@ -90,14 +97,20 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { title, description, status, priority, due_date } = req.body;
 
+  // validate input
+  const errors = validateTask(req.body, true);
+  if (errors.length > 0) {
+    return res.status(400).json({ error: errors.join(', ') });
+  }
+
   const existing = await db('tasks').where('id', req.params.id).first();
   if (!existing) {
     return res.status(404).json({ error: 'task not found' });
   }
 
   await db('tasks').where('id', req.params.id).update({
-    title: title ?? existing.title,
-    description: description ?? existing.description,
+    title: title !== undefined ? title.trim() : existing.title,
+    description: description !== undefined ? (description ? description.trim() : null) : existing.description,
     status: status ?? existing.status,
     priority: priority ?? existing.priority,
     due_date: due_date ?? existing.due_date,
