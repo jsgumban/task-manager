@@ -3,6 +3,7 @@ services:
   - type: web
     name: task-manager-api
     runtime: node
+    plan: free
     rootDir: backend
     buildCommand: npm install && npm run seed
     startCommand: npm start
@@ -14,6 +15,7 @@ services:
   - type: web
     name: task-manager-ui
     runtime: node
+    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     startCommand: npm start
