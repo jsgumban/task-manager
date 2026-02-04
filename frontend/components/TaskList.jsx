@@ -110,6 +110,31 @@ export default function TaskList() {
     }
   };
 
+  // export all tasks to CSV
+  const handleExport = async () => {
+    const result = await request(() => getTasks({ limit: 1000 }));
+    if (!result) return;
+
+    const headers = ['id', 'title', 'description', 'status', 'priority', 'due_date', 'created_at'];
+    const csvRows = [
+      headers.join(','),
+      ...result.data.map(task =>
+        headers.map(h => {
+          const val = task[h] ?? '';
+          return `"${String(val).replace(/"/g, '""')}"`;
+        }).join(',')
+      )
+    ];
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'tasks.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // initial loading state
   if (initialLoad && loading) return <p>loading...</p>;
 
@@ -149,10 +174,15 @@ export default function TaskList() {
         </select>
       </div>
 
-      {/* add task button */}
-      <button onClick={openCreateModal} className="mb-4 px-4 py-2 bg-green-500 text-white rounded">
-        + Add Task
-      </button>
+      {/* action buttons */}
+      <div className="flex gap-2 mb-4">
+        <button onClick={openCreateModal} className="px-4 py-2 bg-green-500 text-white rounded">
+          + Add Task
+        </button>
+        <button onClick={handleExport} className="px-4 py-2 bg-gray-500 text-white rounded">
+          Export CSV
+        </button>
+      </div>
 
       {/* task form modal */}
       <Modal isOpen={showModal} onClose={closeModal} title={editingTask ? 'Edit Task' : 'New Task'}>
