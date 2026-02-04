@@ -18,6 +18,11 @@ export default function TaskList() {
   const [showModal, setShowModal] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
 
+  // pagination
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+
   // filters
   const [filters, setFilters] = useState({
     status: '',
@@ -28,22 +33,26 @@ export default function TaskList() {
 
   const inputClass = 'border rounded px-3 py-2';
 
-  // fetch tasks with filters
-  const fetchTasks = async (currentFilters) => {
+  // fetch tasks with filters and pagination
+  const fetchTasks = async (currentFilters, currentPage = 1) => {
     const [sort, order] = currentFilters.sortBy.split('-');
-    const params = { ...currentFilters, sort, order };
+    const params = { ...currentFilters, sort, order, page: currentPage, limit: 10 };
     delete params.sortBy;
 
-    const data = await request(() => getTasks(params));
-    if (data) {
-      setTasks(data);
+    const result = await request(() => getTasks(params));
+    if (result) {
+      setTasks(result.data);
+      setTotal(result.total);
+      setTotalPages(result.totalPages);
+      setPage(result.page);
       setInitialLoad(false);
     }
   };
 
   // load tasks on mount and when filters change
   useEffect(() => {
-    fetchTasks(filters);
+    setPage(1);
+    fetchTasks(filters, 1);
   }, [filters]);
 
   // filter handlers
@@ -77,7 +86,7 @@ export default function TaskList() {
 
     if (result) {
       closeModal();
-      fetchTasks(filters);
+      fetchTasks(filters, page);
     }
   };
 
@@ -85,13 +94,20 @@ export default function TaskList() {
   const handleDelete = async (id) => {
     if (!confirm('delete this task?')) return;
     const result = await request(() => deleteTask(id));
-    if (result !== null) fetchTasks(filters);
+    if (result !== null) fetchTasks(filters, page);
   };
 
   // quick status change from dropdown
   const handleStatusChange = async (id, status) => {
     const result = await request(() => updateTask(id, { status }));
-    if (result) fetchTasks(filters);
+    if (result) fetchTasks(filters, page);
+  };
+
+  // pagination handlers
+  const goToPage = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      fetchTasks(filters, newPage);
+    }
   };
 
   // initial loading state
@@ -156,6 +172,29 @@ export default function TaskList() {
             onStatusChange={handleStatusChange}
           />
         ))
+      )}
+
+      {/* pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-6">
+          <button
+            onClick={() => goToPage(page - 1)}
+            disabled={page === 1}
+            className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="px-3 py-1">
+            Page {page} of {totalPages} ({total} tasks)
+          </span>
+          <button
+            onClick={() => goToPage(page + 1)}
+            disabled={page === totalPages}
+            className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
+        </div>
       )}
     </div>
   );

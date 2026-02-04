@@ -4,9 +4,9 @@ const { STATUS, PRIORITY } = require('../constants');
 
 const router = express.Router();
 
-// get all tasks with filtering, sorting, and search
+// get all tasks with filtering, sorting, search, and pagination
 router.get('/', async (req, res) => {
-  const { status, priority, sort, order, search } = req.query;
+  const { status, priority, sort, order, search, page = 1, limit = 10 } = req.query;
 
   let query = db('tasks');
 
@@ -28,6 +28,10 @@ router.get('/', async (req, res) => {
     });
   }
 
+  // get total count for pagination
+  const countQuery = query.clone();
+  const [{ count: total }] = await countQuery.count('* as count');
+
   // sort (default: created_at desc)
   const sortField = sort || 'created_at';
   const sortOrder = order || 'desc';
@@ -39,8 +43,22 @@ router.get('/', async (req, res) => {
     query = query.orderBy(sortField, sortOrder);
   }
 
+  // pagination
+  const pageNum = Math.max(1, parseInt(page));
+  const limitNum = Math.max(1, Math.min(100, parseInt(limit)));
+  const offset = (pageNum - 1) * limitNum;
+
+  query = query.limit(limitNum).offset(offset);
+
   const tasks = await query;
-  res.json(tasks);
+  const totalPages = Math.ceil(total / limitNum);
+
+  res.json({
+    data: tasks,
+    total,
+    page: pageNum,
+    totalPages
+  });
 });
 
 // get single task

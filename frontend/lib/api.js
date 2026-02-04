@@ -1,6 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-// get all tasks with optional filters
+// get all tasks with optional filters and pagination
 export async function getTasks(params = {}) {
   const query = new URLSearchParams();
   if (params.status) query.set('status', params.status);
@@ -8,6 +8,8 @@ export async function getTasks(params = {}) {
   if (params.search) query.set('search', params.search);
   if (params.sort) query.set('sort', params.sort);
   if (params.order) query.set('order', params.order);
+  if (params.page) query.set('page', params.page);
+  if (params.limit) query.set('limit', params.limit);
 
   const url = `${API_URL}/api/tasks${query.toString() ? '?' + query : ''}`;
   const res = await fetch(url, { cache: 'no-store' });
