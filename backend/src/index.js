@@ -23,7 +23,11 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'something went wrong' });
 });
 
-// start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// start server only if not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
