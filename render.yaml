@@ -4,17 +4,11 @@ services:
     name: task-manager-api
     runtime: node
     rootDir: backend
-    buildCommand: npm install
+    buildCommand: npm install && npm run seed
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DB_PATH
-        value: /data/tasks.db
-    disk:
-      name: task-data
-      mountPath: /data
-      sizeGB: 1
 
   # Frontend
   - type: web
